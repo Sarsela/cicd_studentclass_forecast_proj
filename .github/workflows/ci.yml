@@ -18,6 +18,7 @@ jobs:
       run: npm install
 
     - name: Запуск тестов
+      working-directory: ./weather-app
       run: npm test
 
   build:
