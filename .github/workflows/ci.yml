@@ -1,3 +1,5 @@
+name: first CI-file
+
 on:
   push:
     branches: ["main"]
@@ -5,33 +7,32 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./weather-app
     steps:
-      - name: Скачивание кода из репозитория
-        uses: actions/checkout@v4
-      - name: Установка NodeJs
-        uses: actions/setup-node@v4
-      - name: Установка зависимостей
-        run: npm install
-      - name: Запуск тестов
-        run: npm test
+    - name: Скачивание кода из репозитория
+      uses: actions/checkout@v4
+
+    - name: Установка NodeJs
+      uses: actions/setup-node@v4
+
+    - name: Установка зависимостей
+      run: npm install
+
+    - name: Запуск тестов
+      run: npm test
 
   build:
     needs: test
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./weather-app
     steps:
       - name: Скачивание репозитория
         uses: actions/checkout@v4
+  
       - name: Сохранение артефакта
         run: zip -r weather-report-app.zip . -x "*.git*" "node_modules/*"
+  
       - name: Сохранение артефакта в гит
         uses: actions/upload-artifact@v4
         with:
           name: app-build
-          path: ./weather-app/weather-report-app.zip
+          path: weather-report-app.zip
           retention-days: 7
